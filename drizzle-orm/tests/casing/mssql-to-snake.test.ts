@@ -391,7 +391,7 @@ describe('mssql to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select [d0].[id] as [id], [d0].[first_name] as [firstName], [d0].[last_name] as [lastName], [d0].[AGE] as [age], [r0_0].[j] as [developers] from [users] as [d0] outer apply (select top(@par0) [d1].[user_id] as [userId], [d1].[uses_drizzle_orm] as [usesDrizzleORM] from [test].[developers] as [d1] where [d0].[id] = [d1].[user_id] for json path, include_null_values, without_array_wrapper) [r0_0]([j]) where (([d0].[first_name] like @par1) and (exists (select * from [test].[developers] as [f0] where (([d0].[id] = [f0].[user_id]) and ([f0].[uses_drizzle_orm] = @par2))))) order by [d0].[first_name] asc offset @par3 rows fetch next @par4 rows only',
+				'select [d0].[id] as [id], [d0].[first_name] as [firstName], [d0].[last_name] as [lastName], [d0].[AGE] as [age], [r0_0].[j] as [developers] from [users] as [d0] outer apply (select top(@par0) [d1].[user_id] as [userId], [d1].[uses_drizzle_orm] as [usesDrizzleORM] from [test].[developers] as [d1] where [d0].[id] = [d1].[user_id] for json path, include_null_values, without_array_wrapper) [r0_0]([j]) where (([d0].[first_name] like @par1) and (exists (select 1 from [test].[developers] as [f0] where (([d0].[id] = [f0].[user_id]) and ([f0].[uses_drizzle_orm] = @par2))))) order by [d0].[first_name] asc offset @par3 rows fetch next @par4 rows only',
 			params: [1, 'A%', true, 4, 2],
 		});
 	});

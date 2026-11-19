@@ -60,8 +60,9 @@ export const commonStringChunks = {
 	' offset ': new StringChunk(' offset '),
 	'top(1) ': new StringChunk('top(1) '),
 	// Relational queries
-	'exists (select * from ': new StringChunk('exists (select * from '),
-	'not exists (select * from ': new StringChunk('not exists (select * from '),
+	// `select 1`, not `select *`: `*` needs the `select` privilege on every column of the table, even inside `exists`
+	'exists (select 1 from ': new StringChunk('exists (select 1 from '),
+	'not exists (select 1 from ': new StringChunk('not exists (select 1 from '),
 	'select count(*) as ': new StringChunk('select count(*) as '),
 	'(select count(*) from ': new StringChunk('(select count(*) from '),
 	'min(': new StringChunk('min('),

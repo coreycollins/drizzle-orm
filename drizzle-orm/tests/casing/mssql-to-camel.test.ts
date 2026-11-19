@@ -391,7 +391,7 @@ describe('mssql to camel case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select [d0].[id] as [id], [d0].[firstName] as [first_name], [d0].[lastName] as [last_name], [d0].[AGE] as [age], [r0_0].[j] as [developers] from [users] as [d0] outer apply (select top(@par0) [d1].[userId] as [user_id], [d1].[usesDrizzleOrm] as [uses_drizzle_orm] from [test].[developers] as [d1] where [d0].[id] = [d1].[userId] for json path, include_null_values, without_array_wrapper) [r0_0]([j]) where (([d0].[firstName] like @par1) and (exists (select * from [test].[developers] as [f0] where (([d0].[id] = [f0].[userId]) and ([f0].[usesDrizzleOrm] = @par2))))) order by [d0].[firstName] asc offset @par3 rows fetch next @par4 rows only',
+				'select [d0].[id] as [id], [d0].[firstName] as [first_name], [d0].[lastName] as [last_name], [d0].[AGE] as [age], [r0_0].[j] as [developers] from [users] as [d0] outer apply (select top(@par0) [d1].[userId] as [user_id], [d1].[usesDrizzleOrm] as [uses_drizzle_orm] from [test].[developers] as [d1] where [d0].[id] = [d1].[userId] for json path, include_null_values, without_array_wrapper) [r0_0]([j]) where (([d0].[firstName] like @par1) and (exists (select 1 from [test].[developers] as [f0] where (([d0].[id] = [f0].[userId]) and ([f0].[usesDrizzleOrm] = @par2))))) order by [d0].[firstName] asc offset @par3 rows fetch next @par4 rows only',
 			params: [1, 'A%', true, 4, 2],
 		});
 	});

@@ -2244,7 +2244,7 @@ export function relationsFilterToSQL(
 				conditions.open();
 				const conditionStart = collectTo.length;
 				collectTo.push(
-					value ? commonStringChunks['exists (select * from '] : commonStringChunks['not exists (select * from '],
+					value ? commonStringChunks['exists (select 1 from '] : commonStringChunks['not exists (select 1 from '],
 				);
 				getTableAsAliasSQL(targetTable, collectTo);
 				if (throughTable) {

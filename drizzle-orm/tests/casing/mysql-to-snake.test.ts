@@ -365,7 +365,7 @@ describe('mysql to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				"select `d0`.`id` as `id`, `d0`.`first_name` as `firstName`, `d0`.`last_name` as `lastName`, `d0`.`AGE` as `age`, `developers`.`r` as `developers` from `users` as `d0` left join lateral(select json_object('userId', `userId`, 'usesDrizzleORM', `usesDrizzleORM`) as `r` from (select `d1`.`user_id` as `userId`, `d1`.`uses_drizzle_orm` as `usesDrizzleORM` from `test`.`developers` as `d1` where `d0`.`id` = `d1`.`user_id` limit ?) as `t`) as `developers` on true where exists (select * from `test`.`developers` as `f0` where ((`d0`.`id` = `f0`.`user_id`) and (`f0`.`uses_drizzle_orm` = ?))) limit ? offset ?",
+				"select `d0`.`id` as `id`, `d0`.`first_name` as `firstName`, `d0`.`last_name` as `lastName`, `d0`.`AGE` as `age`, `developers`.`r` as `developers` from `users` as `d0` left join lateral(select json_object('userId', `userId`, 'usesDrizzleORM', `usesDrizzleORM`) as `r` from (select `d1`.`user_id` as `userId`, `d1`.`uses_drizzle_orm` as `usesDrizzleORM` from `test`.`developers` as `d1` where `d0`.`id` = `d1`.`user_id` limit ?) as `t`) as `developers` on true where exists (select 1 from `test`.`developers` as `f0` where ((`d0`.`id` = `f0`.`user_id`) and (`f0`.`uses_drizzle_orm` = ?))) limit ? offset ?",
 			params: [1, true, 2, 4],
 		});
 	});
@@ -427,7 +427,7 @@ describe('mysql to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				"select `d0`.`id` as `id`, `d0`.`first_name` as `firstName`, `d0`.`last_name` as `lastName`, `d0`.`AGE` as `age`, `developers`.`r` as `developers` from `users` as `d0` left join lateral(select json_object('userId', `userId`, 'usesDrizzleORM', `usesDrizzleORM`) as `r` from (select `d1`.`user_id` as `userId`, `d1`.`uses_drizzle_orm` as `usesDrizzleORM` from `test`.`developers` as `d1` where `d0`.`id` = `d1`.`user_id` limit ?) as `t`) as `developers` on true where ((`d0`.`first_name` like ?) and (exists (select * from `test`.`developers` as `f0` where ((`d0`.`id` = `f0`.`user_id`) and (`f0`.`uses_drizzle_orm` = ?))))) order by `d0`.`first_name` asc limit ? offset ?",
+				"select `d0`.`id` as `id`, `d0`.`first_name` as `firstName`, `d0`.`last_name` as `lastName`, `d0`.`AGE` as `age`, `developers`.`r` as `developers` from `users` as `d0` left join lateral(select json_object('userId', `userId`, 'usesDrizzleORM', `usesDrizzleORM`) as `r` from (select `d1`.`user_id` as `userId`, `d1`.`uses_drizzle_orm` as `usesDrizzleORM` from `test`.`developers` as `d1` where `d0`.`id` = `d1`.`user_id` limit ?) as `t`) as `developers` on true where ((`d0`.`first_name` like ?) and (exists (select 1 from `test`.`developers` as `f0` where ((`d0`.`id` = `f0`.`user_id`) and (`f0`.`uses_drizzle_orm` = ?))))) order by `d0`.`first_name` asc limit ? offset ?",
 			params: [1, 'A%', true, 2, 4],
 		});
 	});

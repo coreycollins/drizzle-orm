@@ -376,7 +376,7 @@ describe('postgres to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where exists (select * from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $1)))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $2) as "t") as "developers" on true',
+				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where exists (select 1 from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $1)))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $2) as "t") as "developers" on true',
 			params: [true, 1],
 		});
 	});
@@ -390,7 +390,7 @@ describe('postgres to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where (("d0"."first_name" like $1) and (exists (select * from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $2)))))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $3) as "t") as "developers" on true order by "d0"."first_name" asc',
+				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where (("d0"."first_name" like $1) and (exists (select 1 from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $2)))))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $3) as "t") as "developers" on true order by "d0"."first_name" asc',
 			params: ['A%', true, 1],
 		});
 	});
@@ -404,7 +404,7 @@ describe('postgres to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where exists (select * from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $1)))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $2) as "t") as "developers" on true limit $3',
+				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from (select "d0".* from "users" as "d0" where exists (select 1 from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $1)))) as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $2) as "t") as "developers" on true limit $3',
 			params: [true, 1, 2],
 		});
 	});
@@ -492,7 +492,7 @@ describe('postgres to snake case', () => {
 
 		expect(query.toSQL()).toEqual({
 			sql:
-				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from "users" as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $1) as "t") as "developers" on true where (("d0"."first_name" like $2) and (exists (select * from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $3))))) order by "d0"."first_name" asc limit $4 offset $5',
+				'select "d0"."id" as "id", "d0"."first_name" as "firstName", "d0"."last_name" as "lastName", "d0"."AGE" as "age", "developers"."r" as "developers" from "users" as "d0" left join lateral(select row_to_json("t".*) "r" from (select "d1"."user_id" as "userId", "d1"."uses_drizzle_orm" as "usesDrizzleORM" from "test"."developers" as "d1" where "d0"."id" = "d1"."user_id" limit $1) as "t") as "developers" on true where (("d0"."first_name" like $2) and (exists (select 1 from "test"."developers" as "f0" where (("d0"."id" = "f0"."user_id") and ("f0"."uses_drizzle_orm" = $3))))) order by "d0"."first_name" asc limit $4 offset $5',
 			params: [1, 'A%', true, 2, 4],
 		});
 	});

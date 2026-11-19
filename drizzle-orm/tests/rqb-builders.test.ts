@@ -841,7 +841,7 @@ describe('Relation names shadowing Object.prototype properties', () => {
 		});
 
 		const { sql } = db.query.results.findMany({ where: { constructor: { id: 1 } } }).toSQL();
-		expect(sql).toContain('exists (select * from "constructors" as "f0" where');
+		expect(sql).toContain('exists (select 1 from "constructors" as "f0" where');
 		expect(sql).not.toContain('"d0"."constructor"');
 	});
 
@@ -938,7 +938,7 @@ describe('Relational filter EmptyFilter behavior', () => {
 			},
 		}).toSQL();
 
-		expect(sql).toContain('exists (select * from "data" as "f0" where (("d0"."id" = "f0"."userId")');
+		expect(sql).toContain('exists (select 1 from "data" as "f0" where (("d0"."id" = "f0"."userId")');
 		expect(sql).toContain('"f0"."username" = $1');
 		expect(params).toStrictEqual(['u']);
 		expect(sql.match(/exists/g)).toHaveLength(1);
@@ -981,9 +981,18 @@ describe('Relational filter EmptyFilter behavior', () => {
 
 	test('Boolean relational filter emits `exists` queries', () => {
 		expect(db.query.user.findMany({ where: { data: true } }).toSQL().sql)
-			.toContain('where exists (select * from "data" as "f0" where "d0"."id" = "f0"."userId")');
+			.toContain('where exists (select 1 from "data" as "f0" where "d0"."id" = "f0"."userId")');
 		expect(db.query.user.findMany({ where: { data: false } }).toSQL().sql)
-			.toContain('where not exists (select * from "data" as "f0" where "d0"."id" = "f0"."userId")');
+			.toContain('where not exists (select 1 from "data" as "f0" where "d0"."id" = "f0"."userId")');
+	});
+
+	// `select *` needs the `select` privilege on every column of the related table, even inside `exists`,
+	// so a role with column-level grants could not use a relational filter
+	test('Relational filter `exists` queries select a constant, not every column', () => {
+		const { sql } = db.query.user.findMany({ where: { data: { username: 'u', tags: { name: 't' } } } }).toSQL();
+
+		expect(sql.match(/exists \(select 1 from /g)).toHaveLength(2);
+		expect(sql).not.toContain('select *');
 	});
 
 	test('EmptyFilter in column-level OR array inside relational filter', () => {
